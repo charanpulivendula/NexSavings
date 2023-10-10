@@ -1,2 +1,2 @@
-# Coup-NDeal
+# NexSavings
 // Application for coupons and deals
