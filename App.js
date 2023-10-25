@@ -5,9 +5,10 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './components/Home';
-import Contact from './components/Contact';
-import Profile from './components/Profile';
-import InfoPage from './components/InfoPage';
+import ContactPage from './components/ContactPage';
+import Profile from './components/UserProfile';
+import CouponInfo from './components/CouponInfo';
+import UserProfile from './components/UserProfile';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,9 +17,9 @@ const App = () => {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Info" component={InfoPage} />
-        <Tab.Screen name="UserProfile" component={Profile} />
-        <Tab.Screen name="Contact" component={Contact} />
+        <Tab.Screen name="CouponInfo" component={CouponInfo} />
+        <Tab.Screen name="UserProfile" component={UserProfile} />
+        <Tab.Screen name="Contact" component={ContactPage} />
       </Tab.Navigator>
     </NavigationContainer>
   );
