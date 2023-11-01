@@ -1,48 +1,41 @@
+// App.js
+
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './components/Home';
 import ContactPage from './components/ContactPage';
+import Profile from './components/UserProfile';
 import CouponInfo from './components/CouponInfo';
 import UserProfile from './components/UserProfile';
 import Login from './components/Login';
+import Signup from './components/Signup';
 
-const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
-const MainTabNavigator = () => (
-  <Tab.Navigator
-    screenOptions={{
-      tabBarStyle: styles.tabBar,
-      tabBarActiveTintColor: '#007AFF', // Active tab color
-      tabBarInactiveTintColor: '#8E8E93', // Inactive tab color
-    }}
-  >
-    <Tab.Screen name="Home" component={Home} />
-    <Tab.Screen name="CouponInfo" component={CouponInfo} />
-    <Tab.Screen name="UserProfile" component={UserProfile} />
-    <Tab.Screen name="Contact" component={ContactPage} />
-  </Tab.Navigator>
-);
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Main" component={MainTabNavigator} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="CouponInfo" component={CouponInfo} />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
+        <Stack.Screen name="Contact" component={ContactPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: '#F8F8F8', // Background color of the tab bar
-  },
-});
-
 export default App;
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

@@ -1,18 +1,25 @@
 // UserProfile.js
 
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image , TouchableOpacity} from 'react-native';
+import { getAuth } from 'firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
-const UserProfile = ({ user }) => {
+const UserProfile = () => {
+  const auth = getAuth();
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>User Profile</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <Text style={styles.headerText}>Home</Text>
+          </TouchableOpacity>
       </View>
       <View style={styles.profileContainer}>
         <Image source={{ uri: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }} style={styles.avatar} />
-        <Text style={styles.username}>Charan</Text>
-        <Text style={styles.email}>repuli@iu.edu</Text>
+        <Text style={styles.username}>{auth.currentUser.email.replace("@gmail.com","")}</Text>
+        <Text style={styles.email}>{auth.currentUser.email}</Text>
       </View>
     </View>
   );
