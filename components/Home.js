@@ -14,14 +14,21 @@ export default function Home({route}) {
   const navigation = useNavigation();
   const [userProfilePic, setUserProfilePic] = useState(null);
   const auth = getAuth();
+  // console.log(auth);
+  const basicProfilePic  = '../assets/profilepic.png'
   useEffect(() => {
-    if (route.params && route.params.profilePic) {
-      setUserProfilePic(route.params.profilePic);
+    const fetchUser= async()=>{
+      if (auth.currentUser){
+        // const user = auth.currentUser;
+        const users = collection(db, 'users');
+        const querySnapshot = await getDocs(users);
+        const user = querySnapshot.docs.find((doc)=>doc.data().uid===auth.currentUser.uid);
+        setUserProfilePic(user.data().imageURL || basicProfilePic);
+        // console.log(user);
+        }
     }
-  }, [route.params]);
-
-  console.log(route.params);
-
+    fetchUser();
+    }, [auth.currentUser,db]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,10 +48,13 @@ export default function Home({route}) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>🛍️NexSavings 💸</Text>
+      <Text style={styles.logoText}>
+      <Text style={styles.boldText}>Nex</Text>💰
+      </Text>
+      {/* <Text style={styles.headerText}>🛍️Nex💰avings</Text> */}
         {userProfilePic && (
           <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
-            <Image source={{ uri:  userProfilePic}} style={styles.profilePic} />
+            <Image source={require('../assets/profilepic.png')} style={styles.profilePic} />
           </TouchableOpacity>
         )}
         {!userProfilePic && (
@@ -99,5 +109,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     textDecorationLine: 'underline',
+  },
+  logoText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#3498db',
+    fontStyle: 'italic',
+  },
+  boldText: {
+    color: '#3498db',
   },
 });

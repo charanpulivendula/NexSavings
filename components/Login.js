@@ -1,7 +1,7 @@
 // Login.js
 
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet,TouchableOpacity,Text } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
@@ -37,11 +37,12 @@ const Login = ({ }) => {
         secureTextEntry
         style={styles.input}
       />
-      <Button title="Login" onPress={handleLogin} />
-      <Button
-        title="Go to Registration"
-        onPress={() => navigation.navigate('Signup')}
-      />
+      <TouchableOpacity onPress={handleLogin}>
+        <Text style={styles.button}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style onPress={() => navigation.navigate('Signup')}>
+        <Text style={styles.button}>Go to Register</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -58,6 +59,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
   },
+  button:{
+    fontSize: 20,
+    backgroundColor: '#344955',
+    padding:5,
+    borderRadius:10,
+    margin:10,
+    height:40,
+    color:'white',
+  }
 });
 
 export default Login;
