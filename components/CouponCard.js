@@ -74,13 +74,14 @@ const CouponCard = ({ couponData }) => {
           <Text style={styles.couponCode}>Code: {couponData.code}</Text>
           <Text style={styles.validity}>Valid until: {couponData.end_time}</Text>
         </View>
-        <View style={styles.footer}>
-          <TouchableOpacity onPress={handleFavorite}>
+        <View style={styles.footer}>{
+          auth.currentUser && <TouchableOpacity onPress={handleFavorite}>
             <Image
               source={isFavorite ? require('../assets/heart_filled.png') : require('../assets/heart_outline.png')}
               style={{ width: 50, height: 50, tintColor: isFavorite ? 'red' : 'black' }}
             />
           </TouchableOpacity>
+          }
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
