@@ -1,25 +1,76 @@
-// UserProfile.js
-
-import React from 'react';
-import { View, Text, StyleSheet, Image , TouchableOpacity} from 'react-native';
-import { getAuth } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { getAuth, signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 const UserProfile = () => {
   const auth = getAuth();
   const navigation = useNavigation();
+  const db = getFirestore();
+
+  const [favoriteCoupons, setFavoriteCoupons] = useState([]);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      // Navigate to the authentication screen or any other screen you prefer
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchFavoriteCoupons = async () => {
+      if (auth.currentUser) {
+        try {
+          const userDocRef = doc(db, 'users', auth.currentUser.uid);
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setFavoriteCoupons(userData.favoriteCoupons || []);
+          }
+        } catch (error) {
+          console.error('Error fetching user document:', error);
+        }
+      }
+    };
+
+    fetchFavoriteCoupons();
+  }, [auth.currentUser, db]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>User Profile</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Text style={styles.headerText}>Home</Text>
-          </TouchableOpacity>
       </View>
       <View style={styles.profileContainer}>
-        <Image source={{ uri: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }} style={styles.avatar} />
-        <Text style={styles.username}>{auth.currentUser.email.replace("@gmail.com","")}</Text>
+        <Image source={require('../assets/profilepic.png')} style={styles.avatar} />
+        <Text style={styles.username}>{auth.currentUser.email.replace('@gmail.com', '')}</Text>
         <Text style={styles.email}>{auth.currentUser.email}</Text>
+      </View>
+      <View style={styles.favoriteContainer}>
+        <Text style={styles.favoriteHeader}>Favorite Coupons</Text>
+        <FlatList
+          data={favoriteCoupons}
+          keyExtractor={(item) => item.id} // Assuming coupon IDs are unique
+          renderItem={({ item }) => (
+            <View style={styles.favoriteItem}>
+              <Text style={styles.favoriteText}>{item.info}</Text>
+              <Text style={styles.favoriteText}>CODE: {item.code}</Text>
+            </View>
+          )}
+        />
+      </View>
+      <View style={styles.tail}>
+        <TouchableOpacity onPress={handleSignOut}>
+          <Text style={styles.headerText}>Sign Out</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.headerText}>Home</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -60,6 +111,25 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 16,
     color: 'gray',
+  },
+  tail: {
+    height: 60,
+    backgroundColor: '#344955',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  favoriteItem: {
+    backgroundColor: '#fff',
+    padding: 16,
+    margin: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  favoriteText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
   },
 });
 
