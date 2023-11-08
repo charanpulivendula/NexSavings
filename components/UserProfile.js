@@ -78,7 +78,7 @@ const UserProfile = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 5,
     flexDirection: 'column',
   },
   header: {
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   profileContainer: {
-    flex: 1,
+    flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -131,6 +131,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
+  favoriteContainer:{
+    flex:3
+  }
 });
 
 export default UserProfile;
