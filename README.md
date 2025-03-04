@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**Student name:** Reddy Charan Pulivendula
+**Name:** Reddy Charan Pulivendula
 
 **Project name:** NexSavings
 
